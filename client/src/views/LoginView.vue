@@ -65,13 +65,14 @@ export default {
                 }
                 this.status = false;
             });
+           
         }
     }
 }
 
 </script>
 
-<style>
+<style scoped>
 .logincard {
     max-width: 50vw;
     padding: 1.9rem 1.2rem;

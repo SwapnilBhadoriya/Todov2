@@ -13,9 +13,11 @@ app.use(express.json());
 //Routers
 const userRouter = require('./routes/user');
 const authrouter = require('./routes/authenticate');
+const adminRouter = require('./routes/admin')
 
 app.use('/',authrouter);
 app.use('/user',userRouter);
+app.use('/admin',adminRouter);
 
 
 // Database and Port
