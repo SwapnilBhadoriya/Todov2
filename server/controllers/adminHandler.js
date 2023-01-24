@@ -33,4 +33,15 @@ const loginHandler = async function (req, res) {
     }
   };
 
-module.exports = {loginHandler}
+
+const getAllUsers = async function(req,res){
+    try {
+        const data = await pool.query('Select * from persons');
+        return res.status(200).json({success:true,users:data.rows})
+    } catch (error) {
+        
+        return res.status(500).json({msg:'Error in getting users from the server'});
+    }
+}
+
+module.exports = {loginHandler,getAllUsers}

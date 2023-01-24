@@ -13,7 +13,27 @@ Vue.use(VueRouter);
 
 const routes = [
   { path: "/admin", component: Admin },
-  { path: "/admin/users", component: AdminView },
+  {
+    path: "/admin/users",
+    component: AdminView,
+    beforeEnter: (to, from, next) => {
+      const token = localStorage.getItem("token");
+      axios
+        .get("http://localhost:3000/admin/users", {
+          headers: { Authorization: localStorage.getItem("token") },
+        })
+        .then((res) => {
+          if (res.data.success) {
+            next();
+          } else if (res.status === 401) {
+            next("/unauthorised");
+          }
+        })
+        .catch((err) => {
+          next("/unauthorised");
+        });
+    },
+  },
   { path: "/unauthorised", component: Unauthorised },
   { path: "/", component: Home },
   { path: "/login", component: Login },

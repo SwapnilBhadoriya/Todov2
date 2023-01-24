@@ -5,7 +5,7 @@
         <div v-if="status" class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        <form>
+        <form class="m-3">
             <div class="field">
                 <svg class="input-icon" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -28,6 +28,7 @@
 
 
         </form>
+        <RouterLink to="/login">User Login Here</RouterLink>
         <p class="mt-3 mb-0 text-white">Don't have an account </p>
         <RouterLink to="/register">Sign Up Here </RouterLink>
     </div>
@@ -53,7 +54,7 @@ export default {
             axios.post('http://localhost:3000/admin', this.formData).then((res) => {
                 console.log(res.data);
                 localStorage.setItem('token', res.data.token);
-                router.push({ path: '/admin/users/'})
+                router.push({ path: '/admin/users/' })
                 this.status = false;
             }).catch((error) => {
                 if (error.response.status !== 201) {

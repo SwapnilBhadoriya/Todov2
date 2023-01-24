@@ -5,7 +5,7 @@
         <div v-if="status" class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-        <form>
+        <form class="m-3">
             <div class="field">
                 <svg class="input-icon" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -28,8 +28,10 @@
 
 
         </form>
+        <RouterLink to="/admin">Admin Login Here</RouterLink>
         <p class="mt-3 mb-0 text-white">Don't have an account </p>
         <RouterLink to="/register">Sign Up Here </RouterLink>
+
     </div>
 </template>
 
@@ -65,7 +67,7 @@ export default {
                 }
                 this.status = false;
             });
-           
+
         }
     }
 }
