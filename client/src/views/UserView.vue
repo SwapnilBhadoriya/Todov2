@@ -1,38 +1,34 @@
 <template>
-
+    
     <div class="container">
         <h1><strong>My Tasks</strong></h1>
         <input v-model="newTodo" type="text" name="text" class="input" placeholder="Add a New Todo ." />
         <button @click="addTodo" class="addbtn">Add Task
         </button>
-        <div v-for="todo in todos" class="card" :key="todo.task_id">
-            <p class="list-item m-2"><strong>{{ todo.task }}</strong></p>
+        <Item @updateTodo="updateTodo" v-for="todo in todos" :todo="todo" :key="todo.task_id"></Item>
 
-
-            <div class="utils">
-                <button class="btn btn-secondary">Edit</button>
-                <button @click="deleteTodo(todo.task_id)" class="btn btn-danger m-3">Delete</button>
-            </div>
-        </div>
         <button @click="logout" class="btn btn-dark">Logout</button>
     </div>
 </template>
   
 <script>
 import axios from 'axios';
-
+import Item from '../components/EditComponent.vue';
+import Message from '../components/Message.vue';
 
 
 export default {
+    components: { Item ,Message},
     created() {
 
         this.getTodos();
 
     },
     data: function () {
-        return { todos: [], user: { name: 'swap', email: 's@s.com' }, newTodo: '', updated: '', showEdit: false }
+        return { todos: [], user: { name: 'swap', email: 's@s.com' }, newTodo: '' }
     },
     methods: {
+
         getTodos() {
             axios.get(`http://localhost:3000${this.$route.path}`, { headers: { Authorization: localStorage.getItem('token') } }).then((res) => {
                 this.todos = res.data.data;
@@ -57,7 +53,12 @@ export default {
             })
 
         },
-        updateTodo() {
+        updateTodo(updates) {
+            console.log(updates);
+            axios.patch(`http://localhost:3000${this.$route.path + '/' + updates.task_id}`,updates,{ headers: { Authorization: localStorage.getItem('token') } }).then((res) => {
+                this.getTodos();
+                console.log(res.data);
+            })
 
         },
         logout() {
@@ -69,6 +70,10 @@ export default {
 </script>  
 <style scoped>
 .card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     margin: 5px;
     width: 60%;

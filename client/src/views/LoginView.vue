@@ -1,6 +1,10 @@
 <template>
     <div class="logincard ">
         <h4 class="title">Log In!</h4>
+        <Message v-if="showMessage" :message="msg"></Message>
+        <div v-if="status" class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
         <form>
             <div class="field">
                 <svg class="input-icon" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
@@ -32,10 +36,11 @@
 <script>
 import axios from 'axios';
 import router from '@/router';
+import Message from '../components/Message.vue'
 export default {
-
+    components: { Message },
     data: function () {
-        return { email: '', password: '' };
+        return { email: '', password: '', showMessage: false, msg: '', status: false };
     },
     computed: {
         formData: function () {
@@ -44,10 +49,21 @@ export default {
     },
     methods: {
         submitLoginForm() {
+            this.status = true;
             axios.post('http://localhost:3000/login', this.formData).then((res) => {
                 console.log(res.data);
                 localStorage.setItem('token', res.data.token);
                 router.push({ path: '/user/' + res.data.id + '/todos' })
+                this.status = false;
+            }).catch((error) => {
+                if (error.response.status !== 201) {
+                    this.msg = error.response.data.msg;
+                    this.showMessage = true;
+                    setTimeout(() => {
+                        this.showMessage = false
+                    }, 5000);
+                }
+                this.status = false;
             });
         }
     }

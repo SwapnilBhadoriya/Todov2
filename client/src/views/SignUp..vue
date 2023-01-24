@@ -2,6 +2,10 @@
 
     <div class=" container container-md " style="max-width: 500px;">
         <h1 class="h1 text-center m-3 p-3">Sign Up </h1>
+        <Message v-if="showMessage" :message="msg" ></Message>
+        <div v-if="status" class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
         <form>
 
             <label for="user_name">Name : </label>
@@ -25,14 +29,18 @@
 </template>
 <script>
 import router from '@/router';
-import axios from 'axios'
+import axios from 'axios';
+import Message from '../components/Message.vue';
 export default {
-
+    components: { Message },
     data: function () {
         return {
             email: '',
             password: '',
             user_name: '',
+            showMessage: false,
+            msg: '',
+            status:false
 
         }
     },
@@ -44,11 +52,23 @@ export default {
     methods: {
 
         submitSignUpForm() {
+            this.status = true;
             axios.post('http://localhost:3000/register', this.formData).then((res) => {
                 console.log(res.data);
                 localStorage.setItem('token', res.data.token);
                 router.push({ path: '/user/' + res.data.id + '/todos' })
+                this.status = false;
+
+            }).catch((error) => {
+                if (error.response.status !== 201) {
+                    this.msg = error.response.data.msg;
+                    this.showMessage = !this.showMessage;
+                    setTimeout(() => { this.showMessage = false }, 5000)
+
+                }
+                this.status = false;
             });
+            
         }
 
     }
