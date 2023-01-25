@@ -2,7 +2,7 @@
 
     <div class=" container container-md " style="max-width: 500px;">
         <h1 class="h1 text-center m-3 p-3">Sign Up </h1>
-        <Message v-if="showMessage" :message="msg" ></Message>
+        <Message v-if="showMessage" :message="msg"></Message>
         <div v-if="status" class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
@@ -40,7 +40,7 @@ export default {
             user_name: '',
             showMessage: false,
             msg: '',
-            status:false
+            status: false
 
         }
     },
@@ -52,6 +52,17 @@ export default {
     methods: {
 
         submitSignUpForm() {
+
+            if (this.email === '' || this.user_name === '' || this.password === '') {
+
+                this.msg = 'Make sure fields are not empty'
+                this.showMessage = !this.showMessage;
+                setTimeout(() => {
+                    this.showMessage = false;
+
+                }, 5000)
+                return;
+            }
             this.status = true;
             axios.post('http://localhost:3000/register', this.formData).then((res) => {
                 console.log(res.data);
@@ -68,7 +79,7 @@ export default {
                 }
                 this.status = false;
             });
-            
+
         }
 
     }
@@ -87,7 +98,7 @@ export default {
     color: whitesmoke;
     width: 70vw;
     min-height: 60vh;
-    background-color: #212121;
+    background-color: rgb(7, 6, 6);
     /* box-shadow: 15px 15px 30px #191919,
         -15px -15px 30px #292929; */
     transition: border-radius cubic-bezier(0.075, 0.82, 0.165, 1) 1s,

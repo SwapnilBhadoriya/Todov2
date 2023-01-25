@@ -5,7 +5,7 @@
         <input v-model="newTodo" type="text" name="text" class="input" placeholder="Add a New Todo ." />
         <button @click="addTodo" class="addbtn">Add Task
         </button>
-        <Item @updateTodo="updateTodo" v-for="todo in todos" :todo="todo" :key="todo.task_id"></Item>
+        <Item @updateTodo="updateTodo" @deleteTodo="deleteTodo" v-for="todo in todos" :todo="todo" :key="todo.task_id"></Item>
 
         <button @click="logout" class="btn btn-dark">Logout</button>
     </div>

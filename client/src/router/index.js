@@ -8,6 +8,7 @@ import Login from "../views/LoginView.vue";
 import Unauthorised from "../views/Unauthorised.vue";
 import Admin from "../views/Admin.vue";
 import AdminView from "../views/AdminView.vue";
+import NotFound from "../views/PageNotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -59,6 +60,7 @@ const routes = [
         });
     },
   },
+  { path: "*", component: NotFound },
 ];
 
 const router = new VueRouter({
